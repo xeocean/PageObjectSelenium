@@ -21,8 +21,31 @@ def test_guest_can_add_product_to_basket(browser, link):
     page.check_add_name_book(book)
 
 
-def test_guest_should_see_login_link_on_product_page(browser):
+def test_guest_should_see_login_link_on_product_page(self, browser):
     link = "https://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
     page = ProductPage(browser, link)
     page.open()
     page.should_be_login_link()
+
+
+@pytest.mark.message
+class TestSuccessMessage:
+    def test_guest_cant_see_success_message_after_adding_product_to_basket(self, browser):
+        link = "https://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+        page = ProductPage(browser, link)
+        page.open()
+        page.add_product()
+        page.should_not_be_success_message()
+
+    def test_guest_cant_see_success_message(self, browser):
+        link = "https://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+        page = ProductPage(browser, link)
+        page.open()
+        page.should_not_be_success_message()
+
+    def test_message_disappeared_after_adding_product_to_basket(self, browser):
+        link = "https://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+        page = ProductPage(browser, link)
+        page.open()
+        page.add_product()
+        page.is_disappered_success_message()

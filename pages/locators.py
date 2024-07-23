@@ -15,4 +15,5 @@ class ProductPageLocators:
     BUTTON_BASKET = (By.CLASS_NAME, "btn-add-to-basket")
     BOOK_NAME = (By.XPATH, "//div[2]/h1")
     ALERT_BOOK_NAME = (By.XPATH, "//*[@id='messages']/div[1]/div/strong")
+    SUCCESS_MESSAGES = (By.CSS_SELECTOR, ".alertinner strong")
 
