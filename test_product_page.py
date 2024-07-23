@@ -1,4 +1,7 @@
+import time
 import pytest
+
+from .pages.login_page import LoginPage
 from .pages.product_page import ProductPage
 
 
@@ -21,7 +24,7 @@ def test_guest_can_add_product_to_basket(browser, link):
     page.check_add_name_book(book)
 
 
-def test_guest_should_see_login_link_on_product_page(self, browser):
+def test_guest_should_see_login_link_on_product_page(browser):
     link = "https://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
     page = ProductPage(browser, link)
     page.open()
@@ -49,3 +52,44 @@ class TestSuccessMessage:
         page.open()
         page.add_product()
         page.is_disappered_success_message()
+
+
+@pytest.mark.need_review
+def test_guest_can_add_product_to_basket(browser):
+    link = "https://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
+    page = ProductPage(browser, link)
+    page.open()
+    book = page.search_name_book()
+    page.add_product()
+    page.check_add_name_book(book)
+
+
+class TestUserAddToBasketFromProductPage:
+    @pytest.fixture(scope='function', autouse=True)
+    def setup(self, browser):
+        link = 'http://selenium1py.pythonanywhere.com/en-gb/accounts/login/'
+        page = LoginPage(browser, link)
+        page.open()
+        email = str(time.time()) + "@fakemail.org"
+        password = 'LhcJyJVft6yz5Ed'
+        page.register_new_user(email, password)
+        page.should_be_authorized_user()
+
+    @pytest.mark.need_review
+    def test_user_can_add_product_to_basket(self, browser):
+        link = "https://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
+        page = ProductPage(browser, link)
+        page.open()
+        book = page.search_name_book()
+        page.add_product()
+        page.check_add_name_book(book)
+
+
+@pytest.mark.login_guest
+class TestLoginFromMainPage:
+    @pytest.mark.need_review
+    def test_guest_can_go_to_login_page_from_product_page(self, browser):
+        link = "https://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+        page = ProductPage(browser, link)
+        page.open()
+        page.go_to_login_page()
